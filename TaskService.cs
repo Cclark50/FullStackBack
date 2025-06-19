@@ -7,17 +7,18 @@ public class TaskService
     
     public TaskService()
     {
-        tasks = new List<MyTask>();
-        tasks.Add(new MyTask(GetNextID(), "Task1", "This is the first task in the list"));
-        tasks.Add(new MyTask(GetNextID(), "Task2", "This is the second task in the list"));
+        tasks =
+        [
+            new MyTask(GetNextID(), "Task1", "This is the first task in the list"),
+            new MyTask(GetNextID(), "Task2", "This is the second task in the list")
+        ];
     }
     
 
     public MyTask At(int index)
     {
-        MyTask? task = tasks.Find(x => x.ID == index);
-        if (task == null) return null;
-        return task;
+        var task = tasks.Find(x => x.ID == index);
+        return task ?? null;
     }
 
     public int GetNumTasks() => tasks.Count;
@@ -27,7 +28,7 @@ public class TaskService
         return tasks;
     }
 
-    public int GetNextID()
+    private int GetNextID()
     {
         return currID++;
     }
@@ -35,7 +36,7 @@ public class TaskService
     public IResult AddTask(string title, string desc)
     {
         if (string.IsNullOrWhiteSpace(title) || string.IsNullOrWhiteSpace(desc)) return Results.BadRequest();
-        MyTask task = new MyTask(GetNextID(), title, desc);
+        var task = new MyTask(GetNextID(), title, desc);
         tasks.Add(task);
         Console.WriteLine("New task added: ID: " + task.ID + ", Title: " + task.Title + ", Description: " + task.Description);
         return Results.Ok(new {id =task.ID, title = title, description = desc, isCompleted = task.IsCompleted});
@@ -66,7 +67,7 @@ public class TaskService
 
     public IResult PrintAll()
     {
-        foreach (MyTask task in tasks)
+        foreach (var task in tasks)
         {
             Console.WriteLine(task.ID + " " + task.Title + " " + task.Description);
         }
